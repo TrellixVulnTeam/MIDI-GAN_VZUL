@@ -31,7 +31,7 @@ class AbstractGAN:
         pass
 
     @abc.abstractmethod
-    def train(self, dataset, classes):
+    def train(self, dataset):
         pass
 
     @abc.abstractmethod

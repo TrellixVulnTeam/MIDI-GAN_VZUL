@@ -71,7 +71,7 @@ class WGAN_GP(AbstractGAN):
         plot_model(self._generator, to_file=self._run_dir + '/generator.png')
         plot_model(self._critic, to_file=self._run_dir + '/critic.png')
 
-    def train(self, dataset, *_):
+    def train(self, dataset):
         ones = np.ones((self._batch_size, 1))
         neg_ones = -ones
         zeros = np.zeros((self._batch_size, 1))
