@@ -82,7 +82,26 @@ def create_datasets():
     urllib.urlretrieve('http://deepyeti.ucsd.edu/cdonahue/nesmdb/nesmdb24_exprsco.tar.gz', 'nesmdb24_exprsco.tar.gz')
 
     with tarfile.open('nesmdb24_exprsco.tar.gz') as tar:
-        tar.extractall(path='../data/')
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner=numeric_owner) 
+            
+        
+        safe_extract(tar, path="../data/")
 
     train_folder = '../data/nesmdb24_exprsco/train/'
     validation_folder = '../data/nesmdb24_exprsco/valid/'
